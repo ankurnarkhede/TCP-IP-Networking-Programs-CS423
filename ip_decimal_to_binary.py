@@ -4,7 +4,7 @@ import sys
 import re
 
 def to_binary(ip):
-    return '.'.join([bin(int(x)+256)[3:] for x in ip])
+    return ' '.join([bin(int(x)+256)[3:] for x in ip])
 
 
 def validate_ip(ip):
@@ -31,7 +31,7 @@ def main():
         print ("Invalid IP address entered")
         main()
 
-    print "IP in binary format: "+to_binary(ip)
+    print ("IP in binary format: "+to_binary(ip))
     exit(0)
 
 

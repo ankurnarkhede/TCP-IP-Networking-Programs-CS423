@@ -4,25 +4,24 @@ import sys
 import re
 
 def to_decimal(ip):
-    return '.'.join([str(int(x,2)) for x in ip])
+    return '.'.join ([str (int (ip[i*8:(i*8)+8], 2)) for i in range(4)])
+
 
 
 def validate_ip(ip):
-    if(len(ip)!=4):
+    if(len(ip)!=32):
         return False
 
-    regex = re.compile("^[01]{8}$")
-    for i in range(0,4,+1):
-        if(regex.search(ip[i])):
-            pass
-        else:
-            return False
+    regex = re.compile("^[01]{32}$")
+    if(not regex.search(ip)):
+        return False
+
     return True
 
 def main():
     print ("Enter dotted binary IP address: ")
     try:
-        ip = (list(sys.stdin.readline ().strip ().split ('.')))
+        ip = (sys.stdin.readline ().strip ())
     except Exception:
         print ("Invalid IP address entered")
         main()
