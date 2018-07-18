@@ -28,6 +28,7 @@ def main():
 
     if (not validate_ip(ip)):
         print ("Invalid IP address entered")
+        print()
         main()
 
     print ("IP in binary format: "+to_decimal(ip))
