@@ -13,30 +13,47 @@ class IP:
         # ip properties
         self.entered = ip_address
 
-        if (self.validate_ip(self.entered)):
-            self.zeros = ['0', '0', '0', '0']
-            self.ones = ['255', '255', '255', '255']
-            # print ("ip validated")
+        self.zeros = ['0', '0', '0', '0']
+        self.ones = ['255', '255', '255', '255']
 
-            # decimal ip
-            self.decimal_str = self.entered
-            self.decimal_str_splitted = (list(self.decimal_str.split('.')))
+        # decimal ip
+        self.decimal_str = None
+        self.decimal_str_splitted = None
 
-            # binary ip
-            self.binary_str = self.dec_to_binary(self.decimal_str_splitted)
-            self.binary_str_splitted = self.dec_to_binary(self.decimal_str_splitted, splitted=1)
+        # binary ip
+        self.binary_str =None
+        self.binary_str_splitted = None
 
-            # ip class
-            self.class_ip, self.net_id, self.host_id, self.net_mask, self.nw_address, self.direct_broadcast \
-                = self.get_class_info(self.decimal_str_splitted, self.zeros, self.ones)
+        # ip class
+        self.class_ip=None
+        self.net_id=None
+        self.host_id=None
+        self.net_mask=None
+        self.nw_address=None
+        self.direct_broadcast=None
 
 
-        else:
-            print("Invalid IP address entered")
-            main()
+
 
     def __str__(self):
         return
+
+    def ip_info(self):
+
+        # getting all ip instances
+
+        # decimal ip
+        self.decimal_str = self.entered
+        self.decimal_str_splitted = (list(self.decimal_str.split('.')))
+
+        # binary ip
+        self.binary_str = self.dec_to_binary(self.decimal_str_splitted)
+        self.binary_str_splitted = self.dec_to_binary(self.decimal_str_splitted, splitted=1)
+
+        # ip class
+        self.class_ip, self.net_id, self.host_id, self.net_mask, self.nw_address, self.direct_broadcast \
+            = self.get_class_info(self.decimal_str_splitted, self.zeros, self.ones)
+
 
     def dec_to_binary(self, ip, splitted=0):
         if (not splitted):
@@ -45,6 +62,7 @@ class IP:
             return ' '.join([bin(int(x) + 256)[3:] for x in ip])
 
     def get_class_info(self, ip, zeros, ones):
+
         # ip is string ip splitted into list
         # determining class of ip
         if ((self.binary_str)[0] == '0'):
@@ -75,10 +93,10 @@ class IP:
 
             return 'D', 'NA', 'NA', 'NA', 'NA', 'NA'
 
-    def validate_ip(self, ip):
+    def validate_ip(self):
 
         regex = re.compile(self.REGEX_DEC)
-        if (not regex.search(ip)):
+        if (not regex.search(self.entered)):
             return False
         return True
 
@@ -95,21 +113,23 @@ class IP:
 
 
 def main():
-    print("Enter dotted decimal IP address: ")
-    try:
-        ip_str = sys.stdin.readline().strip()
+    while(1):
+        print("\nEnter dotted decimal IP address: ")
+        try:
+            ip_str = sys.stdin.readline().strip()
 
-    except Exception:
-        print("Invalid IP address entered")
-        main()
+            # ip operations
+            ip_1 = IP(ip_str)
 
-    # ip operations
-    ip_1 = IP(ip_str)
-    ip_1.print_class_info()
+            if(ip_1.validate_ip()):
+                ip_1.ip_info()
+                ip_1.print_class_info()
+            else:
+                print("Invalid IP address entered")
+                continue
 
-    # class_info(ip)
-
-    sys.exit(0)
+        except Exception as e:
+            print(e)
 
 
 # main
